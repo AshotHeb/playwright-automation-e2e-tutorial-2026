@@ -35,8 +35,23 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "chromium",
+      name: "signup",
+      testMatch: /auth-flow\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "auth-setup",
+      testMatch: /auth\.setup\.ts/,
+      dependencies: ["signup"],
+    },
+    {
+      name: "chromium",
+      testIgnore: [/auth-flow\.spec\.ts/, /auth\.setup\.ts/],
+      use: {
+        ...devices["Desktop Chrome"],
+        storageState: "playwright/.auth/user.json",
+      },
+      dependencies: ["auth-setup"],
     },
 
     // {
